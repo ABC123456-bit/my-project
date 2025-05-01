@@ -25,6 +25,17 @@ export default function ChatAssistant({ isOpen, onClose }: ChatAssistantProps) {
     onSuccess: (data) => {
       setMessages((prev) => [...prev, data.message]);
     },
+    onError: (error: Error) => {
+      // Handle errors from the API
+      setMessages((prev) => [
+        ...prev, 
+        { 
+          role: "assistant", 
+          content: "I'm sorry, I'm having trouble connecting to my knowledge base right now. Please try again later." 
+        }
+      ]);
+      console.error("Chat API Error:", error);
+    },
   });
 
   // Scroll to bottom when messages change

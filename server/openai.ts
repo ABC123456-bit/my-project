@@ -35,9 +35,11 @@ export const handleChatRequest = async (req: Request, res: Response) => {
       });
     }
 
+    let openaiMessages: any[] = [];
+    
     try {
       // Map our app's message format to OpenAI's format
-      const openaiMessages = messages.map(msg => ({
+      openaiMessages = messages.map(msg => ({
         role: msg.role,
         content: msg.content
       }));
@@ -49,7 +51,7 @@ export const handleChatRequest = async (req: Request, res: Response) => {
       });
 
       const response = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo", // Fallback to a more economical model
+        model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024
         messages: openaiMessages,
         temperature: 0.7,
         max_tokens: 500,
@@ -66,7 +68,31 @@ export const handleChatRequest = async (req: Request, res: Response) => {
     } catch (apiError: any) {
       console.error("OpenAI API Error:", apiError);
       
-      // Handle different types of API errors
+      // If the error is model-related, try falling back to gpt-3.5-turbo
+      if (apiError.code === 'model_not_found' || apiError.type === 'invalid_request_error') {
+        try {
+          // The openaiMessages variable should be defined in the outer scope
+          
+          console.log("Falling back to GPT-3.5 Turbo model");
+          const fallbackResponse = await openai.chat.completions.create({
+            model: "gpt-3.5-turbo",
+            messages: currentMessages,
+            temperature: 0.7,
+            max_tokens: 500,
+          });
+          
+          return res.json({
+            message: {
+              role: "assistant",
+              content: fallbackResponse.choices[0].message.content || "I'm sorry, I couldn't process that request."
+            }
+          });
+        } catch (fallbackError) {
+          console.error("Fallback model error:", fallbackError);
+        }
+      }
+      
+      // Handle quota errors
       if (apiError.code === 'insufficient_quota') {
         return res.status(503).json({
           message: {
