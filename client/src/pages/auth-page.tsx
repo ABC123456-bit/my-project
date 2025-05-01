@@ -6,12 +6,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { insertUserSchema, InsertUser } from "@shared/schema";
 import { z } from "zod";
 import { Loader2 } from "lucide-react";
+import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Separator } from "@/components/ui/separator";
 
 // Enhanced schema with validation
 const loginSchema = z.object({
@@ -235,6 +237,29 @@ export default function AuthPage() {
                         </Button>
                       </form>
                     </Form>
+                    
+                    <div className="mt-6">
+                      <div className="relative">
+                        <div className="absolute inset-0 flex items-center">
+                          <Separator className="w-full" />
+                        </div>
+                        <div className="relative flex justify-center text-xs uppercase">
+                          <span className="bg-card px-2 text-muted-foreground">
+                            Or continue with
+                          </span>
+                        </div>
+                      </div>
+                      
+                      <div className="mt-6">
+                        <a 
+                          href="/api/auth/google"
+                          className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                        >
+                          <FcGoogle className="h-5 w-5 mr-2" />
+                          <span>Sign in with Google</span>
+                        </a>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -324,6 +349,29 @@ export default function AuthPage() {
                         </Button>
                       </form>
                     </Form>
+                    
+                    <div className="mt-6">
+                      <div className="relative">
+                        <div className="absolute inset-0 flex items-center">
+                          <Separator className="w-full" />
+                        </div>
+                        <div className="relative flex justify-center text-xs uppercase">
+                          <span className="bg-card px-2 text-muted-foreground">
+                            Or register with
+                          </span>
+                        </div>
+                      </div>
+                      
+                      <div className="mt-6">
+                        <a 
+                          href="/api/auth/google"
+                          className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                        >
+                          <FcGoogle className="h-5 w-5 mr-2" />
+                          <span>Continue with Google</span>
+                        </a>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </TabsContent>
