@@ -71,12 +71,10 @@ export const handleChatRequest = async (req: Request, res: Response) => {
       // If the error is model-related, try falling back to gpt-3.5-turbo
       if (apiError.code === 'model_not_found' || apiError.type === 'invalid_request_error') {
         try {
-          // The openaiMessages variable should be defined in the outer scope
-          
           console.log("Falling back to GPT-3.5 Turbo model");
           const fallbackResponse = await openai.chat.completions.create({
             model: "gpt-3.5-turbo",
-            messages: currentMessages,
+            messages: openaiMessages,
             temperature: 0.7,
             max_tokens: 500,
           });
